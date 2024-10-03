@@ -53,11 +53,11 @@ function MyMenu()
 	-- 	opts = { "Need file" }
 	-- end
 	-- Hardcorded opts
-	-- local opts = {
-	-- 	"First line",
-	-- 	"Second line",
-	-- 	"Third line",
-	-- }
+	local opts = {
+		"First line",
+		"Second line",
+		"Third line",
+	}
 	local cb = function(_, sel)
 		-- vim.cmd("cd " .. sel)
 		vim.cmd("echo " .. sel)
