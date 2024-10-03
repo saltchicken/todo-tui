@@ -37,8 +37,6 @@ end
 
 -- Example usage in your plugin
 
-local success = write_file(filepath, content)
-
 function MyMenu()
 	local success = write_file("./temp", "hello there")
 
