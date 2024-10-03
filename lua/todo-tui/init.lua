@@ -5,8 +5,8 @@ local popup = require("plenary.popup")
 local Win_id
 
 function ShowMenu(opts, cb)
-	local height = 20
-	local width = 30
+	local height = 200
+	local width = 300
 	local borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" }
 
 	Win_id = popup.create(opts, {
