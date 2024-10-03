@@ -11,7 +11,7 @@ function ShowMenu(opts, cb)
 
 	Win_id = popup.create(opts, {
 		title = "TODO",
-		highlight = "TODO HIGHLIGHT",
+		highlight = "TODOHIGHLIGHT",
 		line = math.floor(((vim.o.lines - height) / 2) - 1),
 		col = math.floor((vim.o.columns - width) / 2),
 		minwidth = width,
