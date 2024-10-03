@@ -35,15 +35,15 @@ local function write_file(filepath, content)
 end
 
 function MyMenu()
-	local success = write_file("./temp", "hello there")
+	-- local success = write_file("./temp", "hello there")
+	--
+	-- if success then
+	-- 	print("File written successfully!")
+	-- else
+	-- 	print("Failed to write the file.")
+	-- end
 
-	if success then
-		print("File written successfully!")
-	else
-		print("Failed to write the file.")
-	end
-
-	local file = io.open("~/todo", "r")
+	local file = io.open("./temp", "r")
 	local opts = {}
 	if file then
 		for line in file:lines() do
