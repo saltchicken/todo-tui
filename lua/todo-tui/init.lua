@@ -24,16 +24,16 @@ function ShowMenu(opts, cb)
 end
 
 -- Function to write to a file
-local function write_file(filepath, content)
-	local file = io.open(filepath, "w") -- open the file in write mode ("w" overwrites the file)
-	if not file then
-		vim.api.nvim_err_writeln("Could not open file: " .. filepath)
-		return false
-	end
-	file:write(content) -- write the content to the file
-	file:close() -- close the file
-	return true
-end
+-- local function write_file(filepath, content)
+-- 	local file = io.open(filepath, "w") -- open the file in write mode ("w" overwrites the file)
+-- 	if not file then
+-- 		vim.api.nvim_err_writeln("Could not open file: " .. filepath)
+-- 		return false
+-- 	end
+-- 	file:write(content) -- write the content to the file
+-- 	file:close() -- close the file
+-- 	return true
+-- end
 
 -- Example usage in your plugin
 
