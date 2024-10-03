@@ -30,7 +30,8 @@ function MyMenu()
 		"Third line",
 	}
 	local cb = function(_, sel)
-		print("it works")
+		-- vim.cmd("cd " .. sel)
+		vim.cmd("echo " .. sel)
 	end
 	ShowMenu(opts, cb)
 end
