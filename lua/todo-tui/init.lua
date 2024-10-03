@@ -23,8 +23,14 @@ function ShowMenu(opts, cb)
 	vim.api.nvim_buf_set_keymap(bufnr, "n", "q", "<cmd>lua CloseMenu()<CR>", { silent = false })
 end
 
-todo_tui.setup = function(opts)
-	ShowMenu()
+function MyMenu()
+	local opts = {}
+	local cb = function(_, sel)
+		print("it works")
+	end
+	ShowMenu(opts, cb)
 end
+
+todo_tui.setup = function(opts) end
 
 return todo_tui
