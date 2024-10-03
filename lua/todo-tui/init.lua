@@ -35,23 +35,23 @@ local function write_file(filepath, content)
 end
 
 function MyMenu()
-	local success = write_file("./temp", "hello there")
-
-	if success then
-		print("File written successfully!")
-	else
-		print("Failed to write the file.")
-	end
-
-	local file = io.open("~/todo", "r")
-	local opts = {}
-	if file then
-		for line in file:lines() do
-			table.insert(opts, line)
-		end
-	else
-		opts = { "Need file" }
-	end
+	-- local success = write_file("./temp", "hello there")
+	--
+	-- if success then
+	-- 	print("File written successfully!")
+	-- else
+	-- 	print("Failed to write the file.")
+	-- end
+	--
+	-- local file = io.open("~/todo", "r")
+	-- local opts = {}
+	-- if file then
+	-- 	for line in file:lines() do
+	-- 		table.insert(opts, line)
+	-- 	end
+	-- else
+	-- 	opts = { "Need file" }
+	-- end
 	-- Hardcorded opts
 	-- local opts = {
 	-- 	"First line",
