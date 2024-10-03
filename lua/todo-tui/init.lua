@@ -24,7 +24,8 @@ function ShowMenu(opts, cb)
 end
 
 function MyMenu()
-	local file = io.open("~/todo", "r")
+	-- local file = io.open("~/todo", "r")
+	local file = { "hello", "there" }
 	local opts = {}
 	if file then
 		for line in file:lines() do
