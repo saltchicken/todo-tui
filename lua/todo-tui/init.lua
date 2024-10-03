@@ -18,6 +18,7 @@ function ShowMenu(opts, cb)
 		minheight = height,
 		borderchars = borderchars,
 		callback = cb,
+		wrap = true,
 	})
 	local bufnr = vim.api.nvim_win_get_buf(Win_id)
 	vim.api.nvim_buf_set_keymap(bufnr, "n", "q", "<cmd>lua CloseMenu()<CR>", { silent = false })
