@@ -5,13 +5,13 @@ local popup = require("plenary.popup")
 local Win_id
 
 function ShowMenu(opts, cb)
-	local height = 20
-	local width = 30
+	local height = 40
+	local width = 60
 	local borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" }
 
 	Win_id = popup.create(opts, {
-		title = "MyProjects",
-		highlight = "MyProjectWindow",
+		title = "TODO",
+		highlight = "TODOHIGHLIGHT",
 		line = math.floor(((vim.o.lines - height) / 2) - 1),
 		col = math.floor((vim.o.columns - width) / 2),
 		minwidth = width,
@@ -23,12 +23,41 @@ function ShowMenu(opts, cb)
 	vim.api.nvim_buf_set_keymap(bufnr, "n", "q", "<cmd>lua CloseMenu()<CR>", { silent = false })
 end
 
+local function write_file(filepath, content)
+	local file = io.open(filepath, "w") -- open the file in write mode ("w" overwrites the file)
+	if not file then
+		vim.api.nvim_err_writeln("Could not open file: " .. filepath)
+		return false
+	end
+	file:write(content) -- write the content to the file
+	file:close() -- close the file
+	return true
+end
+
 function MyMenu()
-	local opts = {
-		"First line",
-		"Second line",
-		"Third line",
-	}
+	local success = write_file("./temp", "hello there")
+
+	if success then
+		print("File written successfully!")
+	else
+		print("Failed to write the file.")
+	end
+
+	local file = io.open("~/todo", "r")
+	local opts = {}
+	if file then
+		for line in file:lines() do
+			table.insert(opts, line)
+		end
+	else
+		opts = { "Need file" }
+	end
+	-- Hardcorded opts
+	-- local opts = {
+	-- 	"First line",
+	-- 	"Second line",
+	-- 	"Third line",
+	-- }
 	local cb = function(_, sel)
 		-- vim.cmd("cd " .. sel)
 		vim.cmd("echo " .. sel)
