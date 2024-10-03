@@ -36,19 +36,17 @@ local function write_file(filepath, content)
 end
 
 -- Example usage in your plugin
-local filepath = "/path/to/your/file.txt"
-local content = "This is the content to write into the file."
 
 local success = write_file(filepath, content)
 
-if success then
-	print("File written successfully!")
-else
-	print("Failed to write the file.")
-end
-
 function MyMenu()
-	write_file("temp", "hello there")
+	local success = write_file("temp", "hello there")
+
+	if success then
+		print("File written successfully!")
+	else
+		print("Failed to write the file.")
+	end
 	-- local file = io.open("~/todo", "r")
 	-- local file = { "hello", "there" }
 	-- local opts = {}
