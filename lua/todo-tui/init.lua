@@ -39,12 +39,12 @@ end
 
 function MyMenu()
 	local success = write_file("./temp", "hello there")
-
-	if success then
-		print("File written successfully!")
-	else
-		print("Failed to write the file.")
-	end
+	--
+	-- if success then
+	-- 	print("File written successfully!")
+	-- else
+	-- 	print("Failed to write the file.")
+	-- end
 	-- local file = io.open("~/todo", "r")
 	-- local file = { "hello", "there" }
 	-- local opts = {}
