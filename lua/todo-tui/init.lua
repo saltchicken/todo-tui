@@ -5,13 +5,13 @@ local popup = require("plenary.popup")
 local Win_id
 
 function ShowMenu(opts, cb)
-	local height = 200
-	local width = 300
+	local height = 40
+	local width = 60
 	local borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" }
 
 	Win_id = popup.create(opts, {
-		title = "MyProjects",
-		highlight = "MyProjectWindow",
+		title = "TODO",
+		highlight = "TODO HIGHLIGHT",
 		line = math.floor(((vim.o.lines - height) / 2) - 1),
 		col = math.floor((vim.o.columns - width) / 2),
 		minwidth = width,
@@ -24,11 +24,21 @@ function ShowMenu(opts, cb)
 end
 
 function MyMenu()
-	local opts = {
-		"First line",
-		"Second line",
-		"Third line",
-	}
+	local file = io.open("~/todo", "r")
+	local opts = {}
+	if file then
+		for line in file:lines() do
+			table.insert(opts, line)
+		end
+	else
+		opts = { "Need file" }
+	end
+	-- Hardcorded opts
+	-- local opts = {
+	-- 	"First line",
+	-- 	"Second line",
+	-- 	"Third line",
+	-- }
 	local cb = function(_, sel)
 		-- vim.cmd("cd " .. sel)
 		vim.cmd("echo " .. sel)
