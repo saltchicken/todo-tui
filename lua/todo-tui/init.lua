@@ -24,7 +24,11 @@ function ShowMenu(opts, cb)
 end
 
 function MyMenu()
-	local opts = {}
+	local opts = {
+		"First line",
+		"Second line",
+		"Third line",
+	}
 	local cb = function(_, sel)
 		print("it works")
 	end
