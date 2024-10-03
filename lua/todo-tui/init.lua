@@ -23,23 +23,48 @@ function ShowMenu(opts, cb)
 	vim.api.nvim_buf_set_keymap(bufnr, "n", "q", "<cmd>lua CloseMenu()<CR>", { silent = false })
 end
 
-function MyMenu()
-	-- local file = io.open("~/todo", "r")
-	local file = { "hello", "there" }
-	local opts = {}
-	if file then
-		for line in file:lines() do
-			table.insert(opts, line)
-		end
-	else
-		opts = { "Need file" }
+-- Function to write to a file
+local function write_file(filepath, content)
+	local file = io.open(filepath, "w") -- open the file in write mode ("w" overwrites the file)
+	if not file then
+		vim.api.nvim_err_writeln("Could not open file: " .. filepath)
+		return false
 	end
+	file:write(content) -- write the content to the file
+	file:close() -- close the file
+	return true
+end
+
+-- Example usage in your plugin
+local filepath = "/path/to/your/file.txt"
+local content = "This is the content to write into the file."
+
+local success = write_file(filepath, content)
+
+if success then
+	print("File written successfully!")
+else
+	print("Failed to write the file.")
+end
+
+function MyMenu()
+	write_file("temp", "hello there")
+	-- local file = io.open("~/todo", "r")
+	-- local file = { "hello", "there" }
+	-- local opts = {}
+	-- if file then
+	-- 	for line in file:lines() do
+	-- 		table.insert(opts, line)
+	-- 	end
+	-- else
+	-- 	opts = { "Need file" }
+	-- end
 	-- Hardcorded opts
-	-- local opts = {
-	-- 	"First line",
-	-- 	"Second line",
-	-- 	"Third line",
-	-- }
+	local opts = {
+		"First line",
+		"Second line",
+		"Third line",
+	}
 	local cb = function(_, sel)
 		-- vim.cmd("cd " .. sel)
 		vim.cmd("echo " .. sel)
