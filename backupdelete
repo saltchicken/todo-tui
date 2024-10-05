@@ -1,0 +1,57 @@
+local Job = require('plenary.job')
+
+-- Path to the folder with the .git directory
+local repo_path = "/path/to/your/repo"
+
+-- Function to check for updates and pull if available
+local function update_git_repo()
+  -- Change directory to repo and fetch from remote
+  local fetch_job = Job:new({
+    command = 'git',
+    args = { 'fetch' },
+    cwd = repo_path,
+    on_exit = function(j, return_val)
+      if return_val ~= 0 then
+        print("Error fetching updates: " .. table.concat(j:stderr_result(), '\n'))
+        return
+      end
+      -- Compare local and remote commits
+      local local_commit = Job:new({
+        command = 'git',
+        args = { 'rev-parse', '@' },
+        cwd = repo_path,
+      }):sync()[1]
+
+      local remote_commit = Job:new({
+        command = 'git',
+        args = { 'rev-parse', '@{u}' },
+        cwd = repo_path,
+      }):sync()[1]
+
+      if local_commit ~= remote_commit then
+        -- Pull updates if commits are different
+        print("Updates available, pulling changes...")
+        local pull_job = Job:new({
+          command = 'git',
+          args = { 'pull' },
+          cwd = repo_path,
+          on_exit = function(_, return_val_pull)
+            if return_val_pull == 0 then
+              print("Repository updated successfully.")
+            else
+              print("Error during pull.")
+            end
+          end,
+        })
+        pull_job:start()
+      else
+        print("Repository is already up to date.")
+      end
+    end,
+  })
+
+  fetch_job:start()
+end
+
+-- Call the function to check for updates
+update_git_repo()
