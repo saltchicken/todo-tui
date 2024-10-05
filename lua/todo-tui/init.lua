@@ -1,27 +1,43 @@
 local todo_tui = {}
 
 local popup = require("plenary.popup")
+local git = require("todo-tui.git")
 
 local Win_id
 
 function ShowMenu(opts, cb)
-	local height = 40
-	local width = 60
+	local screen_width = vim.o.columns
+	local screen_height = vim.o.lines
+	local popup_width = math.floor(screen_width * 0.9)
+	local popup_height = math.floor(screen_height * 0.4)
+	-- local popup_height = 40
+	-- local popup_width = 60
 	local borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" }
 
 	Win_id = popup.create(opts, {
 		title = "TODO",
 		highlight = "TODOHIGHLIGHT",
-		line = math.floor(((vim.o.lines - height) / 2) - 1),
-		col = math.floor((vim.o.columns - width) / 2),
-		minwidth = width,
-		minheight = height,
+		line = math.floor(((vim.o.lines - popup_height) / 2) - 1),
+		col = math.floor((vim.o.columns - popup_width) / 2),
+		minwidth = popup_width,
+		minheight = popup_height,
 		borderchars = borderchars,
 		callback = cb,
 		wrap = true,
 	})
 	local bufnr = vim.api.nvim_win_get_buf(Win_id)
 	vim.api.nvim_buf_set_keymap(bufnr, "n", "q", "<cmd>lua CloseMenu()<CR>", { silent = false })
+
+	vim.api.nvim_create_autocmd({ "BufWipeout", "BufDelete" }, {
+		buffer = bufnr,
+		callback = function()
+			git.add()
+			git.commit()
+			git.push()
+		end,
+	})
+
+	git.pull()
 end
 
 local function write_file(filepath, content)
@@ -35,16 +51,15 @@ local function write_file(filepath, content)
 	return true
 end
 
-function MyMenu()
-	-- local success = write_file("./temp", "hello there")
-	--
-	-- if success then
-	-- 	print("File written successfully!")
-	-- else
-	-- 	print("Failed to write the file.")
-	-- end
+local function write_current_to_file()
+	local buf = vim.api.nvim_get_current_buf()
+	local lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
 
-	local file = io.open("./temp", "r")
+	write_file(git.repo_path .. "/" .. "todo.txt", table.concat(lines, "\n"))
+end
+
+function MyMenu()
+	local file = io.open("/home/saltchicken/.local/share/keep/todo.txt", "r")
 	local opts = {}
 	if file then
 		for line in file:lines() do
@@ -61,7 +76,8 @@ function MyMenu()
 	-- }
 	local cb = function(_, sel)
 		-- vim.cmd("cd " .. sel)
-		vim.cmd("echo " .. sel)
+		-- print(sel)
+		write_current_to_file()
 	end
 	ShowMenu(opts, cb)
 end
