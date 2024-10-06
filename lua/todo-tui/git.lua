@@ -6,6 +6,8 @@ git.setup = function(opts)
 	git.repo_path = opts.repo_path
 end
 
+-- git.repo_path = "/home/saltchicken/.local/share/keep"
+
 git.pull = function()
 	Job:new({
 		command = "git",
