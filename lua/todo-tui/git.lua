@@ -54,11 +54,10 @@ local commit = Job:new({
 	on_stderr = function(_, data)
 		print("stderr:", data)
 	end,
-	on_exit = function(j, return_val)
+	on_exit = function(_, return_val)
 		if return_val == 0 then
 			print("Git commit successful!")
 		else
-			print(j)
 			print("Git commit failed!")
 		end
 	end,
