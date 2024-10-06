@@ -4,6 +4,10 @@ local popup = require("plenary.popup")
 local git = require("todo-tui.git")
 local file = require("todo-tui.file")
 
+todo_tui.setup = function(opts)
+	git.setup(opts)
+end
+
 local Win_id
 
 function ShowMenu(opts, cb)
@@ -15,8 +19,8 @@ function ShowMenu(opts, cb)
 	-- local popup_width = 60
 	local borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" }
 
-	Win_id = popup.create(opts, {
-		title = "TODO",
+	Win_id = popup.create(opts.contents, {
+		title = opts.title,
 		highlight = "TODOHIGHLIGHT",
 		line = math.floor(((vim.o.lines - popup_height) / 2) - 1),
 		col = math.floor((vim.o.columns - popup_width) / 2),
@@ -32,9 +36,6 @@ function ShowMenu(opts, cb)
 	vim.api.nvim_create_autocmd({ "BufWipeout", "BufDelete" }, {
 		buffer = bufnr,
 		callback = function()
-			-- git.add()
-			-- git.commit()
-			-- git.push()
 			git.add_commit_push()
 		end,
 	})
@@ -49,17 +50,15 @@ local function write_current_to_file()
 	file.write_file(git.repo_path .. "/" .. "todo.txt", table.concat(lines, "\n"))
 end
 
-function MyMenu()
+function KeepTodo()
+	local opts = {}
+	opts.title = "TODO"
 	local filepath = "/home/saltchicken/.local/share/keep/todo.txt"
-	local opts = file.read_file(filepath)
+	opts.contents = file.read_file(filepath)
 	local cb = function(_, sel)
-		-- vim.cmd("cd " .. sel)
-		-- print(sel)
 		write_current_to_file()
 	end
 	ShowMenu(opts, cb)
 end
-
-todo_tui.setup = function(opts) end
 
 return todo_tui

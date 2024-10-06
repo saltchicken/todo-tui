@@ -2,7 +2,9 @@ local git = {}
 
 local Job = require("plenary.job")
 
-git.repo_path = "/home/saltchicken/.local/share/keep"
+git.setup = function(opts)
+	git.repo_path = opts.repo_path
+end
 
 git.pull = function()
 	Job:new({
