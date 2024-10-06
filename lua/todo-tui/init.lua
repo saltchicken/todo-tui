@@ -32,9 +32,10 @@ function ShowMenu(opts, cb)
 	vim.api.nvim_create_autocmd({ "BufWipeout", "BufDelete" }, {
 		buffer = bufnr,
 		callback = function()
-			git.add()
-			git.commit()
-			git.push()
+			-- git.add()
+			-- git.commit()
+			-- git.push()
+			git.add_commit_push()
 		end,
 	})
 
@@ -49,21 +50,8 @@ local function write_current_to_file()
 end
 
 function MyMenu()
-	local f = io.open("/home/saltchicken/.local/share/keep/todo.txt", "r")
-	local opts = {}
-	if f then
-		for line in f:lines() do
-			table.insert(opts, line)
-		end
-	else
-		opts = { "Need file" }
-	end
-	-- Hardcorded opts
-	-- local opts = {
-	-- 	"First line",
-	-- 	"Second line",
-	-- 	"Third line",
-	-- }
+	local filepath = "/home/saltchicken/.local/share/keep/todo.txt"
+	local opts = file.read_file(filepath)
 	local cb = function(_, sel)
 		-- vim.cmd("cd " .. sel)
 		-- print(sel)
