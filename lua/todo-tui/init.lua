@@ -4,8 +4,10 @@ local popup = require("plenary.popup")
 local git = require("todo-tui.git")
 local file = require("todo-tui.file")
 
+local repo_path
 todo_tui.setup = function(opts)
 	git.setup(opts)
+	repo_path = opts.repo_path
 end
 
 local Win_id
@@ -53,7 +55,7 @@ end
 function KeepTodo()
 	local opts = {}
 	opts.title = "TODO"
-	local filepath = "/home/saltchicken/.local/share/keep/todo.txt"
+	local filepath = repo_path .. "/todo.txt"
 	opts.contents = file.read_file(filepath)
 	local cb = function(_, sel)
 		write_current_to_file()
