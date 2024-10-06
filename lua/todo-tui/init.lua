@@ -2,6 +2,7 @@ local todo_tui = {}
 
 local popup = require("plenary.popup")
 local git = require("todo-tui.git")
+local file = require("todo-tui.file")
 
 local Win_id
 
@@ -40,29 +41,18 @@ function ShowMenu(opts, cb)
 	git.pull()
 end
 
-local function write_file(filepath, content)
-	local file = io.open(filepath, "w") -- open the file in write mode ("w" overwrites the file)
-	if not file then
-		vim.api.nvim_err_writeln("Could not open file: " .. filepath)
-		return false
-	end
-	file:write(content) -- write the content to the file
-	file:close() -- close the file
-	return true
-end
-
 local function write_current_to_file()
 	local buf = vim.api.nvim_get_current_buf()
 	local lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
 
-	write_file(git.repo_path .. "/" .. "todo.txt", table.concat(lines, "\n"))
+	file.write_file(git.repo_path .. "/" .. "todo.txt", table.concat(lines, "\n"))
 end
 
 function MyMenu()
-	local file = io.open("/home/saltchicken/.local/share/keep/todo.txt", "r")
+	local f = io.open("/home/saltchicken/.local/share/keep/todo.txt", "r")
 	local opts = {}
-	if file then
-		for line in file:lines() do
+	if f then
+		for line in f:lines() do
 			table.insert(opts, line)
 		end
 	else
