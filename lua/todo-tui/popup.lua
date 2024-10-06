@@ -37,6 +37,7 @@ keep_popup.show_menu = function(opts, cb)
 		end,
 	})
 
+	-- TODO: Pull needs to be called before the popup is shown
 	git.pull()
 end
 
