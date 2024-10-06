@@ -8,6 +8,7 @@ local repo_path
 todo_tui.setup = function(opts)
 	git.setup(opts)
 	repo_path = opts.repo_path
+	require("todo-tui.keymaps").set_keymaps()
 end
 
 local Win_id
