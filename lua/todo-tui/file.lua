@@ -11,4 +11,18 @@ file.write_file = function(filepath, content)
 	return true
 end
 
+file.read_file = function(filepath)
+	local f = io.open(filepath, "r")
+	local opts = {}
+	if f then
+		for line in f:lines() do
+			table.insert(opts, line)
+		end
+	else
+		vim.api.nvim_err_writeln("Could not open file: " .. filepath)
+		opts = nil
+	end
+	return opts
+end
+
 return file
