@@ -25,4 +25,11 @@ file.read_file = function(filepath)
 	return opts
 end
 
+file.write_current_to_file = function(filepath)
+	local buf = vim.api.nvim_get_current_buf()
+	local lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
+
+	file.write_file(filepath, table.concat(lines, "\n"))
+end
+
 return file

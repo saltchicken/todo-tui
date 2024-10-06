@@ -11,20 +11,13 @@ todo_tui.setup = function(opts)
 	require("todo-tui.keymaps").set_keymaps()
 end
 
-local function write_current_to_file()
-	local buf = vim.api.nvim_get_current_buf()
-	local lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
-
-	file.write_file(git.repo_path .. "/" .. "todo.txt", table.concat(lines, "\n"))
-end
-
 function KeepTodo()
 	local opts = {}
 	opts.title = "TODO"
 	local filepath = repo_path .. "/todo.txt"
 	opts.contents = file.read_file(filepath)
 	local cb = function(_, sel)
-		write_current_to_file()
+		file.write_current_to_file(filepath)
 	end
 	keep_popup.show_menu(opts, cb)
 end
