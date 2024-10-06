@@ -22,4 +22,16 @@ function KeepTodo()
 	keep_popup.show_menu(opts, cb)
 end
 
+-- TODO: Repeated code with KeepTodo. Might be a better way
+function KeepCommands()
+	local opts = {}
+	opts.title = "COMMANDS"
+	local filename = "commands.txt"
+	opts.contents = file.read_file(filename)
+	local cb = function(_, sel)
+		file.write_current_to_file(filename)
+	end
+	keep_popup.show_menu(opts, cb)
+end
+
 return todo_tui
