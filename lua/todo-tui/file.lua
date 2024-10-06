@@ -1,5 +1,9 @@
 local file = {}
 
+file.setup = function(opts)
+	file.opts = opts
+end
+
 file.write_file = function(filepath, content)
 	local f = io.open(filepath, "w") -- open the file in write mode ("w" overwrites the file)
 	if not f then
@@ -11,7 +15,8 @@ file.write_file = function(filepath, content)
 	return true
 end
 
-file.read_file = function(filepath)
+file.read_file = function(filename)
+	local filepath = file.opts.repo_path .. "/" .. filename
 	local f = io.open(filepath, "r")
 	local opts = {}
 	if f then
@@ -25,7 +30,8 @@ file.read_file = function(filepath)
 	return opts
 end
 
-file.write_current_to_file = function(filepath)
+file.write_current_to_file = function(filename)
+	local filepath = file.opts.repo_path .. "/" .. filename
 	local buf = vim.api.nvim_get_current_buf()
 	local lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
 
