@@ -6,6 +6,7 @@ local git = require("todo-tui.git")
 local Win_id
 
 function CloseMenu()
+	-- print("Closing :" .. Win_id)
 	vim.api.nvim_win_close(Win_id, true)
 end
 
@@ -29,10 +30,12 @@ keep_popup.show_menu = function(opts, cb)
 		callback = cb,
 		wrap = true,
 	})
+	-- print("Opening: " .. Win_id)
 	local bufnr = vim.api.nvim_win_get_buf(Win_id)
 
 	-- TODO: Actually set this to something that kills the window. Not implemented
 	vim.api.nvim_buf_set_keymap(bufnr, "n", "q", "<cmd>lua CloseMenu()<CR>", { silent = false })
+	-- TODO: Add a function that does pull
 
 	vim.api.nvim_create_autocmd({ "BufWipeout", "BufDelete" }, {
 		buffer = bufnr,
@@ -40,9 +43,19 @@ keep_popup.show_menu = function(opts, cb)
 			git.add_commit_push()
 		end,
 	})
+end
 
-	-- TODO: Pull needs to be called before the popup is shown
-	git.pull()
+keep_popup.pull_then_show_menu = function(opts, cb)
+	git.pull:after(function()
+		keep_popup.wrapped_insert_show_menu(opts, cb)
+	end)
+	git.pull:start()
+end
+
+keep_popup.wrapped_insert_show_menu = function(opts, cb)
+	vim.schedule_wrap(function()
+		keep_popup.show_menu(opts, cb)
+	end)()
 end
 
 return keep_popup

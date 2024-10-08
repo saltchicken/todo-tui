@@ -19,6 +19,7 @@ function KeepTodo()
 	local cb = function(_, sel)
 		file.write_current_to_file(filename)
 	end
+	-- keep_popup.pull_then_show_menu(opts, cb)
 	keep_popup.show_menu(opts, cb)
 end
 
@@ -31,6 +32,7 @@ function KeepCommands()
 	local cb = function(_, sel)
 		file.write_current_to_file(filename)
 	end
+	-- keep_popup.pull_then_show_menu(opts, cb)
 	keep_popup.show_menu(opts, cb)
 end
 

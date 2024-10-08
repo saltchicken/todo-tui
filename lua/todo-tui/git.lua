@@ -72,20 +72,18 @@ git.setup = function(opts)
 	})
 end
 
-git.pull = function()
-	Job:new({
-		command = "git",
-		args = { "pull" },
-		cwd = git.repo_path,
-		on_exit = function(j, return_val)
-			if return_val == 0 then
-				print("Git folder updated successfully!")
-			else
-				print("Failed to update git folder.")
-			end
-		end,
-	}):start()
-end
+git.pull = Job:new({
+	command = "git",
+	args = { "pull" },
+	cwd = git.repo_path,
+	on_exit = function(j, return_val)
+		if return_val == 0 then
+			print("Git folder updated successfully!")
+		else
+			print("Failed to update git folder.")
+		end
+	end,
+})
 
 git.add_commit_push = function()
 	git.commit:after(function()
