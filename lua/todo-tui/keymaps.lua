@@ -13,19 +13,7 @@ keymaps.set_keymaps = function()
 		once = true,
 		callback = function()
 			vim.keymap.set("n", "<leader>kt", KeepTodo, { noremap = false, silent = true })
-			-- vim.keymap.set(
-			-- 	"v",
-			-- 	"<C-l>",
-			-- 	require("nvim-ollama-pilot.core").run_current_selection,
-			-- 	{ noremap = false, silent = true }
-			-- )
-			-- This keymap only used for testing
-			-- vim.keymap.set(
-			-- 	"i",
-			-- 	"<C-a>",
-			-- 	require("nvim-ollama-pilot.buffer").insert_ghost_text,
-			-- 	{ noremap = false, silent = true }
-			-- )
+			vim.keymap.set("n", "<leader>kc", KeepCommands, { noremap = false, silent = true })
 		end,
 	})
 end
