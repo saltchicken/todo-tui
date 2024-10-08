@@ -5,6 +5,10 @@ local git = require("todo-tui.git")
 
 local Win_id
 
+function CloseMenu()
+	vim.api.nvim_win_close(Win_id, true)
+end
+
 keep_popup.show_menu = function(opts, cb)
 	local screen_width = vim.o.columns
 	local screen_height = vim.o.lines
@@ -26,7 +30,7 @@ keep_popup.show_menu = function(opts, cb)
 		wrap = true,
 	})
 	local bufnr = vim.api.nvim_win_get_buf(Win_id)
-	--
+
 	-- TODO: Actually set this to something that kills the window. Not implemented
 	vim.api.nvim_buf_set_keymap(bufnr, "n", "q", "<cmd>lua CloseMenu()<CR>", { silent = false })
 
