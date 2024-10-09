@@ -58,4 +58,45 @@ keep_popup.wrapped_insert_show_menu = function(opts, cb)
 	end)()
 end
 
+keep_popup.show_yes_no_prompt = function(question, cb)
+	local width = 40
+	local height = 10
+	local bufnr = vim.api.nvim_create_buf(false, true)
+
+	local win_id = popup.create(bufnr, {
+		title = "Prompt",
+		highlight = "Normal",
+		line = math.floor((vim.o.lines - height) / 2),
+		col = math.floor((vim.o.columns - width) / 2),
+		minwidth = width,
+		minheight = height,
+		border = true,
+	})
+
+	vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, { question })
+	vim.api.nvim_buf_set_lines(bufnr, 2, -1, false, { "Press 'y' for yes, 'n' for no" })
+
+	local function handle_input(char)
+		vim.api.nvim_win_close(win_id, true)
+		if char == "y" then
+			cb(true)
+		elseif char == "n" then
+			cb(false)
+		else
+			print("Invalid input, try again")
+		end
+	end
+
+	vim.api.nvim_buf_set_keymap(bufnr, "n", "y", "", {
+		callback = function()
+			handle_input("y")
+		end,
+	})
+	vim.api.nvim_buf_set_keymap(bufnr, "n", "n", "", {
+		callback = function()
+			handle_input("n")
+		end,
+	})
+end
+
 return keep_popup

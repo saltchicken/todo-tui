@@ -36,4 +36,12 @@ function KeepCommands()
 	keep_popup.show_menu(opts, cb)
 end
 
+function TestPopup()
+	local question = "Would you like to continue"
+	local cb = function(sel)
+		print(sel)
+	end
+	keep_popup.show_yes_no_prompt(question, cb)
+end
+
 return todo_tui
