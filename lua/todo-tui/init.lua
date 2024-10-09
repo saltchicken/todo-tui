@@ -44,4 +44,9 @@ function TestPopup()
 	keep_popup.show_yes_no_prompt(question, cb)
 end
 
+function TestSplit()
+	-- keep_popup.create_split_popup()
+	keep_popup.create_floating_window_test()
+end
+
 return todo_tui
