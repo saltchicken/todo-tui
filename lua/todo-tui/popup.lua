@@ -151,7 +151,8 @@ local function create_floating_window(width, height, col, row)
 		col = col,
 		row = row,
 		style = "minimal",
-		border = "none",
+		border = "single",
+		footer = "hello",
 	}
 
 	local win = vim.api.nvim_open_win(buf, true, win_opts)
@@ -180,9 +181,14 @@ keep_popup.create_floating_window_test = function()
 		end,
 	})
 
+	local win_opts = {
+		footer = "footer",
+	}
+
+	vim.api.nvim_win_set_config(win1, win_opts)
 	-- Optional: Additional buffer/window options
 	-- vim.api.nvim_buf_set_option(buf, 'modifiable', false) -- Make buffer read-only
-	-- vim.wo.modifiable = false
+	-- vim.wo[win1].footer = "footer"
 	-- vim.api.nvim_win_set_option(win, 'cursorline', true) -- Highlight the current line
 	-- vim.wo.cursorline = true
 end
