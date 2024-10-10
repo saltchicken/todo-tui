@@ -8,7 +8,7 @@ local keymaps = require("todo-tui.keymaps")
 Windows = require("windows"):new()
 
 todo_tui.setup = function(opts)
-	git.setup(opts)
+	git.setup(opts, Windows)
 	keymaps.set_keymaps()
 	file.setup(opts)
 end
@@ -37,18 +37,20 @@ function KeepTodo()
 			"U",
 			function()
 				-- git.get_current_revision:start()
+				-- git.check_update_available:after(function()
+				-- end)
 				git.check_update_available()
 			end,
 		},
 	}
 
-	-- git.pull:after(function()
-	-- 	vim.schedule_wrap(function()
-	-- 		Windows:floating_window(opts, contents)
-	-- 	end)()
-	-- end)
-	-- git.pull:start()
-	Windows:floating_window(opts, contents)
+	git.pull:after(function()
+		vim.schedule_wrap(function()
+			Windows:floating_window(opts, contents)
+		end)()
+	end)
+	git.pull:start()
+	-- Windows:floating_window(opts, contents)
 end
 
 -- TODO: Repeated code with KeepTodo. Might be a better way
