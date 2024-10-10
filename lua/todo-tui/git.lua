@@ -2,6 +2,8 @@ local git = {}
 
 local Job = require("plenary.job")
 
+git.current_revision = nil
+
 git.setup = function(opts)
 	git.repo_path = opts.repo_path
 
@@ -93,6 +95,48 @@ git.add_commit_push = function()
 		git.commit:start()
 	end)
 	git.add:start()
+end
+
+git.get_current_revision = Job:new({
+	command = "git",
+	args = { "rev-parse", "HEAD" },
+	cwd = git.repo_path,
+	on_exit = function(job, return_val)
+		if return_val == 0 then
+			local commit_hash = table.concat(job:result(), "\n")
+			git.current_revision = commit_hash
+		else
+			print("Failed to get the current revision")
+		end
+	end,
+})
+
+git.compare_local_to_remote = Job:new({
+	command = "git",
+	args = { "ls-remote", "origin", "HEAD" },
+	cwd = git.repo_path,
+	on_exit = function(job, return_val)
+		if return_val == 0 then
+			local result = table.concat(job:result(), "\n")
+			local remote_commit_hash = result:match("^(.*)\t") or result
+			print("Local: " .. git.current_revision)
+			print("Remote: " .. remote_commit_hash)
+			if remote_commit_hash == git.current_revision then
+				print("Up to date")
+			else
+				print("Update available")
+			end
+		else
+			print("Failed to get the remote revision")
+		end
+	end,
+})
+
+git.check_update_available = function()
+	git.get_current_revision:after(function()
+		git.compare_local_to_remote:start()
+	end)
+	git.get_current_revision:start()
 end
 
 return git

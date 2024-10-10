@@ -30,6 +30,17 @@ function KeepTodo()
 		end,
 	}
 
+	opts.keymaps = {
+		{
+			"n",
+			"U",
+			function()
+				-- git.get_current_revision:start()
+				git.check_update_available()
+			end,
+		},
+	}
+
 	-- git.pull:after(function()
 	-- 	vim.schedule_wrap(function()
 	-- 		Windows:floating_window(opts, contents)
@@ -45,8 +56,10 @@ function KeepCommands()
 	local contents = file.read_file(filename)
 
 	local opts = {
-		width = 40,
-		height = 10,
+		-- width = 40,
+		-- height = 10,
+		fullscreen = true,
+		centered = true,
 		col = 0,
 		row = 0,
 		on_exit = function()
