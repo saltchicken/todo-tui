@@ -20,6 +20,8 @@ function KeepTodo()
 	local opts = {
 		width = 40,
 		height = 10,
+		centered = true,
+		fullscreen = true,
 		col = 0,
 		row = 0,
 		on_exit = function()
