@@ -68,17 +68,18 @@ keep_popup.show_yes_no_prompt = function(question, cb)
 	local bufnr = vim.api.nvim_create_buf(false, true)
 
 	local win_id = popup.create(bufnr, {
+		relative = "editor",
 		title = "Prompt",
 		highlight = "Normal",
 		line = math.floor((vim.o.lines - height) / 2),
 		col = math.floor((vim.o.columns - width) / 2),
 		minwidth = width,
 		minheight = height,
-		border = true,
+		border = "single",
+		footer = "Press 'y' for yes, 'n' for no",
 	})
 
 	vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, { question })
-	vim.api.nvim_buf_set_lines(bufnr, 2, -1, false, { "Press 'y' for yes, 'n' for no" })
 
 	local function handle_input(char)
 		vim.api.nvim_win_close(win_id, true)
@@ -103,45 +104,7 @@ keep_popup.show_yes_no_prompt = function(question, cb)
 	})
 end
 
-keep_popup.create_split_popup = function()
-	local width = 60
-	local height = 20
-
-	local bufnr = vim.api.nvim_create_buf(false, true)
-
-	local win_id = popup.create(bufnr, {
-		title = "Split Popup",
-		highlight = "Normal",
-		line = math.floor((vim.o.lines - height) / 2),
-		col = math.floor((vim.o.columns - width) / 2),
-		minwidth = width,
-		minheight = height,
-		border = true,
-	})
-
-	-- vim.api.nvim_set_current_win(win_id)
-	-- vim.api.nvim_command("vsplit")
-	-- vim.cmd("vsplit")
-	local second_bufnr = vim.api.nvim_create_buf(false, true)
-	local second_win_id = vim.api.nvim_get_current_win()
-
-	vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, { "This is buffer 1" })
-
-	-- vim.api.nvim_win_set_buf(win_id, second_bufnr)
-	-- vim.api.nvim_buf_set_lines(second_bufnr, 0, -1, false, { "This is buffer 2" })
-
-	vim.api.nvim_buf_set_keymap(bufnr, "n", "q", "<cmd>q<CR>", { noremap = true, silent = true })
-	vim.api.nvim_buf_set_keymap(second_bufnr, "n", "q", "<cmd>q<CR>", { noremap = true, silent = true })
-
-	vim.api.nvim_buf_set_keymap(bufnr, "n", "q", "", {
-		callback = function()
-			vim.api.nvim_win_close(win_id, true)
-			vim.api.nvim_win_close(second_win_id, true)
-		end,
-	})
-end
-
-local function create_floating_window(width, height, col, row)
+local function create_floating_window(width, height, col, row, footer)
 	local buf = vim.api.nvim_create_buf(false, true)
 
 	local win_opts = {
@@ -152,7 +115,7 @@ local function create_floating_window(width, height, col, row)
 		row = row,
 		style = "minimal",
 		border = "single",
-		footer = "hello",
+		footer = footer,
 	}
 
 	local win = vim.api.nvim_open_win(buf, true, win_opts)
@@ -181,16 +144,16 @@ keep_popup.create_floating_window_test = function()
 		end,
 	})
 
-	local win_opts = {
-		footer = "footer",
-	}
+	-- HOW TO SET NEW OPTIONS
+	-- local win_opts = {
+	-- 	footer = "footer",
+	--
+	-- vim.api.nvim_win_set_config(win1, win_opts)
+	--
+end
 
-	vim.api.nvim_win_set_config(win1, win_opts)
-	-- Optional: Additional buffer/window options
-	-- vim.api.nvim_buf_set_option(buf, 'modifiable', false) -- Make buffer read-only
-	-- vim.wo[win1].footer = "footer"
-	-- vim.api.nvim_win_set_option(win, 'cursorline', true) -- Highlight the current line
-	-- vim.wo.cursorline = true
+keep_popup.yes_no_prompt = function(question)
+	local win, buf = create_floating_window(50, 3, 0, 0, "Press 'y' for yes, press 'n' for no")
 end
 
 -- TESTING TESTING TESTING
