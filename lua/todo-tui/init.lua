@@ -15,6 +15,7 @@ end
 
 function KeepTodo()
 	local filename = "todo.txt"
+	-- git.blocking_pull()
 	local contents = file.read_file(filename)
 
 	local opts = {

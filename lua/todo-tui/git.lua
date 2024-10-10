@@ -118,6 +118,7 @@ git.compare_local_to_remote = Job:new({
 	on_exit = function(job, return_val)
 		if return_val == 0 then
 			local result = table.concat(job:result(), "\n")
+			print(result)
 			local remote_commit_hash = result:match("^(.*)\t") or result
 			print("Local: " .. git.current_revision)
 			print("Remote: " .. remote_commit_hash)
@@ -133,10 +134,22 @@ git.compare_local_to_remote = Job:new({
 })
 
 git.check_update_available = function()
+	-- TODO: Make this its own plenary job
+	local current_directory
+	vim.fn.chdir(git.repo_path)
+	vim.fn.system("git fetch")
+	vim.fn.chdir(current_directory)
 	git.get_current_revision:after(function()
 		git.compare_local_to_remote:start()
 	end)
 	git.get_current_revision:start()
+end
+
+git.blocking_pull = function()
+	local current_directory
+	vim.fn.chdir(git.repo_path)
+	vim.fn.system("git pull")
+	vim.fn.chdir(current_directory)
 end
 
 return git
