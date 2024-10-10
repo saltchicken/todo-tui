@@ -5,7 +5,7 @@ local file = require("todo-tui.file")
 local keep_popup = require("todo-tui.popup")
 local keymaps = require("todo-tui.keymaps")
 
-local Windows = require("windows"):new()
+Windows = require("windows"):new()
 
 todo_tui.setup = function(opts)
 	git.setup(opts)
@@ -18,8 +18,8 @@ function KeepTodo()
 	local contents = file.read_file(filename)
 
 	local opts = {
-		width = 40,
-		height = 10,
+		-- width = 40,
+		-- height = 10,
 		centered = true,
 		fullscreen = true,
 		col = 0,
@@ -30,6 +30,12 @@ function KeepTodo()
 		end,
 	}
 
+	-- git.pull:after(function()
+	-- 	vim.schedule_wrap(function()
+	-- 		Windows:floating_window(opts, contents)
+	-- 	end)()
+	-- end)
+	-- git.pull:start()
 	Windows:floating_window(opts, contents)
 end
 
