@@ -15,7 +15,7 @@ end
 
 function KeepTodo()
 	local filename = "todo.txt"
-	-- git.blocking_pull()
+	git.blocking_pull()
 	local contents = file.read_file(filename)
 
 	local opts = {
@@ -44,13 +44,13 @@ function KeepTodo()
 		},
 	}
 
-	git.pull:after(function()
-		vim.schedule_wrap(function()
-			Windows:floating_window(opts, contents)
-		end)()
-	end)
-	git.pull:start()
-	-- Windows:floating_window(opts, contents)
+	-- git.pull:after(function()
+	-- 	vim.schedule_wrap(function()
+	-- 		Windows:floating_window(opts, contents)
+	-- 	end)()
+	-- end)
+	-- git.pull:start()
+	Windows:floating_window(opts, contents)
 end
 
 -- TODO: Repeated code with KeepTodo. Might be a better way
