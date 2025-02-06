@@ -1,13 +1,19 @@
 ```lua
+return {
+
   {
-    "saltchicken/nvim-ollama-pilot",
-    dependencies = { "nvim-lua/plenary.nvim" },
+    "saltchicken/todo-tui",
+    dependencies = {
+      "saltchicken/windows.nvim",
+    },
     config = function()
-      require("nvim-ollama-pilot").setup({
-        server_address = "localhost",
-        port = 11434,
-        debug = false,
+      local todo = require("todo-tui")
+      todo.setup({
+        debug = true,
+        repo_path = "C:/users/saltchicken/keep",
       })
     end,
   },
+}
+
 ```
