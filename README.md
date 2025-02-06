@@ -1,3 +1,4 @@
+```lua
   {
     "saltchicken/nvim-ollama-pilot",
     dependencies = { "nvim-lua/plenary.nvim" },
@@ -9,3 +10,4 @@
       })
     end,
   },
+```
